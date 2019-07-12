@@ -1,0 +1,124 @@
+<h4><span id="count"></span> selected layers</h4>
+<p><input class="input" id="value" placeholder="New value" /></p>
+<button class="button button--primary" id="update">Update</button>
+<button class="button" id="cancel">Cancel</button>
+<script>
+  document.getElementById("update").onclick = () => {
+    const textbox = document.getElementById("value");
+    parent.postMessage(
+      { pluginMessage: { type: "update-text", value: textbox.value } },
+      "*"
+    );
+  };
+
+  document.getElementById("cancel").onclick = () => {
+    parent.postMessage({ pluginMessage: { type: "cancel" } }, "*");
+  };
+  onmessage = event => {
+    if (event.data.pluginMessage.type == "setSelectionCount") {
+      console.log("Selected layers: ", event.data.pluginMessage.value);
+      document.getElementById("count").innerHTML =
+        event.data.pluginMessage.value;
+    }
+  };
+</script>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  }
+  .button {
+    display: inline-block;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    margin: 1px 0 1px 0;
+    padding: 5px 16px 5px 16px;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    outline: none;
+  }
+
+  .button--primary {
+    color: #ffffff;
+    background-color: #18a0fb;
+    font-family: "Inter", sans-serif;
+    line-height: 16px;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.01em;
+  }
+
+  .button--primary:active,
+  .button--primary:focus {
+    border: 2px solid rgba(0, 0, 0, 0.3);
+  }
+
+  .button--primary:disabled {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+  .input {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    width: 100%;
+    height: 30px;
+    margin: 1px 0 1px 0;
+    padding: 8px 4px 8px 7px;
+    color: rgba(0, 0, 0, 0.8);
+    border: 1px solid transparent;
+    border-radius: 2px;
+    outline: none;
+    background-color: #ffffff;
+    font-family: "Inter", sans-serif;
+    line-height: 16px;
+    font-weight: 400;
+    font-size: 11px;
+    letter-spacing: 0.005em;
+  }
+
+  .input:hover {
+    color: rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .input:active,
+  .input:focus {
+    padding: 8px 4px 8px 6px;
+    color: #000000;
+    border: 2px solid #18a0fb;
+    border-radius: 2px;
+  }
+
+  .input::-moz-selection {
+    color: #000000;
+    background-color: rgba(24, 145, 251, 0.3);
+  }
+
+  .input::selection {
+    color: #000000;
+    background-color: rgba(24, 145, 251, 0.3);
+  }
+
+  .input::-webkit-input-placeholder {
+    color: rgba(0, 0, 0, 0.3);
+  }
+
+  .input:-ms-input-placeholder {
+    color: rgba(0, 0, 0, 0.3);
+  }
+
+  .input::-ms-input-placeholder {
+    color: rgba(0, 0, 0, 0.3);
+  }
+
+  .input::placeholder {
+    color: rgba(0, 0, 0, 0.3);
+  }
+
+  .input:disabled {
+    color: rgba(0, 0, 0, 0.3);
+  }
+</style>

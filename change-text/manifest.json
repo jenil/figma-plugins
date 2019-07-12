@@ -1,0 +1,7 @@
+{
+  "name": "Change Text",
+  "id": "731518687861874126",
+  "version": "0.5.0",
+  "html": "ui.html",
+  "script": "plugin.js"
+}
