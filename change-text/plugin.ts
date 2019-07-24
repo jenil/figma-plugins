@@ -1,14 +1,26 @@
 figma.showUI(__html__);
 
+var textSelection = filterData(
+  figma.currentPage.selection,
+  i => i.type == "TEXT"
+);
+
 figma.ui.postMessage({
-  type: "setSelectionCount",
-  value: figma.currentPage.selection.length
+  type: "setSelectionMsg",
+  value: `Selected ${figma.currentPage.selection.length} layers with ${
+    textSelection.length
+  } text layers`,
+  count: textSelection.length
 });
+
 figma.ui.onmessage = async msg => {
   if (msg.type == "update-text") {
-    const textSelection = figma.currentPage.selection.filter(
+    var textSelection = filterData(
+      figma.currentPage.selection,
       i => i.type == "TEXT"
-    ) as TextNode[];
+    );
+    console.log(textSelection);
+
     for (const text of textSelection) {
       await figma.loadFontAsync(text.fontName as FontName);
       if (text.type === "TEXT") {
@@ -20,3 +32,21 @@ figma.ui.onmessage = async msg => {
     figma.closePlugin();
   }
 };
+
+function filterData(data, predicate) {
+  return !!!data
+    ? null
+    : data.reduce((list, entry) => {
+        let clone = null;
+        if (predicate(entry)) {
+          clone = entry;
+          list.push(clone);
+        } else if (entry.children != null) {
+          let children = filterData(entry.children, predicate);
+          if (children.length > 0) {
+            list.push(...children);
+          }
+        }
+        return list;
+      }, []);
+}

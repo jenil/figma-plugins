@@ -1,7 +1,9 @@
-<h4><span id="count"></span> selected layers</h4>
-<p><input class="input" id="value" placeholder="New value" /></p>
-<button class="button button--primary" id="update">Update</button>
-<button class="button" id="cancel">Cancel</button>
+<h5><span id="count"></span></h5>
+<form id="selection">
+  <p><input class="input" id="value" placeholder="New value" /></p>
+  <button class="button button--primary" id="update">Update</button>
+  <button class="button" id="cancel">Cancel</button>
+</form>
 <script>
   document.getElementById("update").onclick = () => {
     const textbox = document.getElementById("value");
@@ -15,10 +17,17 @@
     parent.postMessage({ pluginMessage: { type: "cancel" } }, "*");
   };
   onmessage = event => {
-    if (event.data.pluginMessage.type == "setSelectionCount") {
-      console.log("Selected layers: ", event.data.pluginMessage.value);
-      document.getElementById("count").innerHTML =
-        event.data.pluginMessage.value;
+    console.log("Selected layers: ", event.data.pluginMessage.count);
+    if (event.data.pluginMessage.type == "setSelectionMsg") {
+      if (event.data.pluginMessage.count > 0) {
+        document.getElementById("count").innerHTML =
+          event.data.pluginMessage.value;
+        document.getElementById("selection").style.display = "block";
+      } else {
+        document.getElementById("count").innerHTML =
+          "Please select a few layers and then run the plugin";
+        document.getElementById("selection").style.display = "none";
+      }
     }
   };
 </script>

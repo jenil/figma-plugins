@@ -35,9 +35,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 figma.showUI(__html__);
+var textSelection = filterData(figma.currentPage.selection, function (i) { return i.type == "TEXT"; });
 figma.ui.postMessage({
-    type: "setSelectionCount",
-    value: figma.currentPage.selection.length
+    type: "setSelectionMsg",
+    value: "Selected " + figma.currentPage.selection.length + " layers with " + textSelection.length + " text layers",
+    count: textSelection.length
 });
 figma.ui.onmessage = function (msg) { return __awaiter(_this, void 0, void 0, function () {
     var textSelection, _i, textSelection_1, text;
@@ -45,7 +47,8 @@ figma.ui.onmessage = function (msg) { return __awaiter(_this, void 0, void 0, fu
         switch (_a.label) {
             case 0:
                 if (!(msg.type == "update-text")) return [3 /*break*/, 5];
-                textSelection = figma.currentPage.selection.filter(function (i) { return i.type == "TEXT"; });
+                textSelection = filterData(figma.currentPage.selection, function (i) { return i.type == "TEXT"; });
+                console.log(textSelection);
                 _i = 0, textSelection_1 = textSelection;
                 _a.label = 1;
             case 1:
@@ -71,3 +74,21 @@ figma.ui.onmessage = function (msg) { return __awaiter(_this, void 0, void 0, fu
         }
     });
 }); };
+function filterData(data, predicate) {
+    return !!!data
+        ? null
+        : data.reduce(function (list, entry) {
+            var clone = null;
+            if (predicate(entry)) {
+                clone = entry;
+                list.push(clone);
+            }
+            else if (entry.children != null) {
+                var children = filterData(entry.children, predicate);
+                if (children.length > 0) {
+                    list.push.apply(list, children);
+                }
+            }
+            return list;
+        }, []);
+}
