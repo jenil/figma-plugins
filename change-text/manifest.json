@@ -1,7 +1,7 @@
 {
   "name": "Change Text",
   "id": "735148445325474400",
-  "api": "0.6.0",
-  "ui": "ui.html",
-  "main": "plugin.js"
+  "api": "1.0.0",
+  "ui": "ui.ts",
+  "main": "plugin.ts"
 }

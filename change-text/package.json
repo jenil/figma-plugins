@@ -1,6 +1,16 @@
 {
   "name": "change-text",
   "version": "1.0.0",
-  "main": "plugin.js",
-  "license": "MIT"
+  "description": "Change Text plugin for Figma",
+  "main": "index.js",
+  "license": "MIT",
+  "author": {
+    "name": "Jenil Gogari",
+    "email": "i@jgog.in",
+    "url": "https://jgog.in"
+  },
+  "scripts": {
+    "dev": "figplug build -w",
+    "build": "figplug build -O"
+  }
 }

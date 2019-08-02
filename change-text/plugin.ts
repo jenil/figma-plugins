@@ -1,9 +1,10 @@
-figma.showUI(__html__);
-
 var textSelection = filterData(
   figma.currentPage.selection,
   i => i.type == "TEXT"
 );
+figma.showUI(__html__);
+if (!textSelection.length)
+  figma.closePlugin("Please select a few layers and then run the plugin.");
 
 figma.ui.postMessage({
   type: "setSelectionMsg",
@@ -23,13 +24,16 @@ figma.ui.onmessage = async msg => {
 
     for (const text of textSelection) {
       await figma.loadFontAsync(text.fontName as FontName);
-      if (text.type === "TEXT") {
-        text.characters = msg.value || "";
+      if (text.type === "TEXT" && text.characters) {
+        if (msg.match) {
+          text.characters = text.characters.replace(msg.match, msg.value);
+        } else text.characters = msg.value;
       }
     }
     figma.closePlugin();
   } else {
-    figma.closePlugin();
+    console.log(msg);
+    figma.closePlugin("Incorrect action");
   }
 };
 
