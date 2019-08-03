@@ -2,7 +2,12 @@ var textSelection = filterData(
   figma.currentPage.selection,
   i => i.type == "TEXT"
 );
-figma.showUI(__html__);
+
+figma.showUI(__html__, {
+  width: 600,
+  height: 300
+});
+
 if (!textSelection.length)
   figma.closePlugin("Please select a few layers and then run the plugin.");
 
@@ -11,29 +16,30 @@ figma.ui.postMessage({
   value: `Selected ${figma.currentPage.selection.length} layers with ${
     textSelection.length
   } text layers`,
-  count: textSelection.length
+  count: textSelection.length,
+  selection: textSelection.map(i => i.characters)
 });
 
 figma.ui.onmessage = async msg => {
+  console.log(msg);
+
   if (msg.type == "update-text") {
-    var textSelection = filterData(
-      figma.currentPage.selection,
-      i => i.type == "TEXT"
-    );
     console.log(textSelection);
 
     for (const text of textSelection) {
       await figma.loadFontAsync(text.fontName as FontName);
       if (text.type === "TEXT" && text.characters) {
-        if (msg.match) {
-          text.characters = text.characters.replace(msg.match, msg.value);
-        } else text.characters = msg.value;
+        let exp = msg.match ? msg.match : text.characters;
+
+        text.characters = text.characters.replace(
+          new RegExp(exp, msg.ignoreCase ? "ig" : "g"),
+          msg.value
+        );
       }
     }
-    figma.closePlugin();
+    figma.closePlugin("🎉");
   } else {
-    console.log(msg);
-    figma.closePlugin("Incorrect action");
+    figma.closePlugin();
   }
 };
 

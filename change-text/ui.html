@@ -1,7 +1,28 @@
 <p><span id="count"></span></p>
-<form id="selection">
-  <p><input class="input" id="matchVal" placeholder="Match (Optional)" /></p>
-  <p><input class="input" id="value" placeholder="New value" /></p>
-  <button class="button button--primary" id="update">Update</button>
-  <button class="button" id="cancel">Cancel</button>
-</form>
+<div class="container">
+  <div class="form">
+    <form id="selection">
+      <p>
+        <input class="input" id="matchVal" placeholder="Match (Optional)" />
+      </p>
+      <label class="switch">
+        <div class="switch__container">
+          <input type="checkbox" class="switch__checkbox" id="ignoreCase" />
+          <span class="switch__slider"></span>
+        </div>
+        <div class="switch__label">Ignore case</div>
+      </label>
+      <p><input class="input" id="value" placeholder="New value" /></p>
+      <button class="button button--primary" id="update">Update</button>
+      <button class="button" id="cancel">Cancel</button>
+    </form>
+  </div>
+  <div class="preview">
+    <h3>Preview</h3>
+    <dl></dl>
+  </div>
+</div>
+<script id="preview-item" type="text/template">
+  <dt>{{CURRENT}}</dt>
+  <dd>{{NEW}}</dd>
+</script>

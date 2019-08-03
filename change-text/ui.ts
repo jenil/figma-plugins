@@ -1,21 +1,48 @@
+const match = <HTMLInputElement>document.getElementById("matchVal");
+const textbox = <HTMLInputElement>document.getElementById("value");
+const ignoreCase = <HTMLInputElement>document.getElementById("ignoreCase");
+let selection = [];
+
+match.oninput = updatePreview;
+textbox.oninput = updatePreview;
+ignoreCase.onchange = updatePreview;
+
 document.getElementById("update").onclick = () => {
-  const match = document.getElementById("matchVal") as HTMLInputElement;
-  const textbox = document.getElementById("value") as HTMLInputElement;
-  parent.postMessage(
-    {
-      pluginMessage: {
-        type: "update-text",
-        value: textbox.value,
-        match: match.value
-      }
-    },
-    "*"
-  );
+  let confirmation = true;
+
+  if (!textbox.value && !match.value)
+    confirmation = window.confirm(
+      "This will clear the text in the selected layers. Are you absolutely sure?"
+    );
+
+  if (confirmation) {
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: "update-text",
+          value: textbox.value,
+          match: match.value,
+          ignoreCase: ignoreCase.checked
+        }
+      },
+      "*"
+    );
+  } else {
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: "cancel"
+        }
+      },
+      "*"
+    );
+  }
 };
 
 document.getElementById("cancel").onclick = () => {
   parent.postMessage({ pluginMessage: { type: "cancel" } }, "*");
 };
+
 onmessage = event => {
   console.log("Selected layers: ", event.data.pluginMessage.count);
   if (event.data.pluginMessage.type == "setSelectionMsg") {
@@ -28,5 +55,29 @@ onmessage = event => {
         "Please select a few layers and then run the plugin";
       document.getElementById("selection").style.display = "none";
     }
+
+    console.log(event.data.pluginMessage.selection);
+    selection = event.data.pluginMessage.selection;
+    updatePreview();
   }
 };
+
+function updatePreview() {
+  let previewHTML = "";
+  const item = document.querySelector("#preview-item").innerHTML;
+
+  selection.forEach(text => {
+    let newText = "";
+    let exp = match.value ? match.value : text;
+
+    newText = text.replace(
+      new RegExp(exp, ignoreCase.checked ? "ig" : "g"),
+      textbox.value
+    );
+
+    previewHTML += item
+      .replace(/{{CURRENT}}/g, text)
+      .replace(/{{NEW}}/g, newText);
+  });
+  document.querySelector(".preview dl").innerHTML = previewHTML;
+}
