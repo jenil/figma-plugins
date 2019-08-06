@@ -68,7 +68,9 @@ function updatePreview() {
 
   selection.forEach(text => {
     let newText = "";
-    let exp = match.value ? match.value : text;
+    let exp = match.value
+      ? match.value
+      : text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 
     newText = text.replace(
       new RegExp(exp, ignoreCase.checked ? "ig" : "g"),
