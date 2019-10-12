@@ -12,6 +12,10 @@ body {
   grid-gap: 20px;
 }
 
+.container .form  {
+  min-width: 200px;
+}
+
 .preview {
   border-left: 1px solid var(--grey-light);
   padding-left: 20px;

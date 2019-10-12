@@ -68,12 +68,13 @@ function updatePreview() {
 
   selection.forEach(text => {
     let newText = "";
-    let exp = match.value
-      ? match.value
-      : text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+    let exp = match.value ? match.value : text;
 
     newText = text.replace(
-      new RegExp(exp, ignoreCase.checked ? "ig" : "g"),
+      new RegExp(
+        exp.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"),
+        ignoreCase.checked ? "ig" : "g"
+      ),
       textbox.value
     );
 

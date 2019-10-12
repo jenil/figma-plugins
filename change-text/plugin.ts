@@ -29,12 +29,13 @@ figma.ui.onmessage = async msg => {
     for (const text of textSelection) {
       await figma.loadFontAsync(text.fontName as FontName);
       if (text.type === "TEXT" && text.characters) {
-        let exp = msg.match
-          ? msg.match
-          : text.characters.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+        let exp = msg.match ? msg.match : text.characters;
 
         text.characters = text.characters.replace(
-          new RegExp(exp, msg.ignoreCase ? "ig" : "g"),
+          new RegExp(
+            exp.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"),
+            msg.ignoreCase ? "ig" : "g"
+          ),
           msg.value
         );
       }
