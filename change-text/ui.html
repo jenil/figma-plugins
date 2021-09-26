@@ -7,12 +7,20 @@
       </p>
       <label class="switch">
         <div class="switch__container">
+          <input type="checkbox" class="switch__checkbox" id="isRegex" />
+          <span class="switch__slider"></span>
+        </div>
+        <div class="switch__label">Match using regex</div>
+      </label>
+      <label class="switch">
+        <div class="switch__container">
           <input type="checkbox" class="switch__checkbox" id="ignoreCase" />
           <span class="switch__slider"></span>
         </div>
         <div class="switch__label">Ignore case</div>
       </label>
       <p><input class="input" id="value" placeholder="New value" /></p>
+      <p><small class="text-secondary">Use <code>$&</code> to get matched value</small></p>
       <button class="button button--primary" id="update">Update</button>
       <button class="button" id="cancel">Cancel</button>
     </form>
@@ -23,6 +31,6 @@
   </div>
 </div>
 <script id="preview-item" type="text/template">
-  <dt>{{CURRENT}}</dt>
-  <dd>{{NEW}}</dd>
+  <dt title="{{CURRENT}}">{{CURRENT}}</dt>
+  <dd title="{{NEW}}">{{NEW}}</dd>
 </script>

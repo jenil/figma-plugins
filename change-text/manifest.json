@@ -3,5 +3,6 @@
   "id": "735148445325474400",
   "api": "1.0.0",
   "ui": "ui.ts",
-  "main": "plugin.ts"
+  "main": "plugin.ts",
+  "editorType" : ["figma"]
 }
