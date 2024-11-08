@@ -3,6 +3,10 @@
     "target": "es2017",
     "lib": ["es2017", "dom"],
     "strictNullChecks": false,
-    "baseUrl": "."
+    "baseUrl": ".",
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/@figma"
+    ]
   }
 }

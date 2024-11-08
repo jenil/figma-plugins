@@ -49,7 +49,6 @@ document.getElementById('cancel').onclick = () => {
 };
 
 onmessage = (event) => {
-    console.log('Selected layers: ', event.data.pluginMessage.count);
     if (event.data.pluginMessage.type == 'setSelectionMsg') {
         if (event.data.pluginMessage.count > 0) {
             document.getElementById('count').innerHTML =
@@ -61,7 +60,6 @@ onmessage = (event) => {
             document.getElementById('selection').style.display = 'none';
         }
 
-        console.log(event.data.pluginMessage.selection);
         selection = event.data.pluginMessage.selection;
         updatePreview();
     }

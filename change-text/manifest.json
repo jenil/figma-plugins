@@ -4,5 +4,9 @@
   "api": "1.0.0",
   "ui": "ui.ts",
   "main": "plugin.ts",
-  "editorType" : ["figma"]
+  "editorType" : ["figma", "figjam"],
+  "documentAccess": "dynamic-page",
+  "networkAccess": {
+    "allowedDomains": ["none"]
+  }
 }
